@@ -1,0 +1,106 @@
+openapi: 3.0.0
+info:
+  contact:
+    email: s.pourcheragh@wallex.net
+    name: Saeed Pourcheragh
+    url: https://wallpay.org
+  description: reCAPTCHA v3 returns a score for each request without user friction.
+    The score is based on interactions with your site and enables you to take an appropriate
+    action for your site. Register reCAPTCHA v3 keys on the reCAPTCHA Admin console.
+  title: reCAPTCHA
+  version: 3.0.0
+externalDocs:
+  description: |-
+    Verifying the user's response
+
+    This page explains how to verify a user's response to a reCAPTCHA challenge from your application's backend.
+
+    For web users, you can get the user's response token in one of three ways:
+
+    - g-recaptcha-response POST parameter when the user submits the form on your site
+    - grecaptcha.getResponse(opt_widget_id) after the user completes the reCAPTCHA challenge
+    - As a string argument to your callback function if data-callback is specified in either the g-recaptcha tag attribute or the callback parameter in the grecaptcha.render method
+    For Android library users, you can call the SafetyNetApi.RecaptchaTokenResult.getTokenResult() method to get response token if the status returns successful.
+
+    Token Restrictions
+    Each reCAPTCHA user response token is valid for two minutes, and can only be verified once to prevent replay attacks. If you need a new token, you can re-run the reCAPTCHA verification.
+
+    After you get the response token, you need to verify it within two minutes with reCAPTCHA using the following API to ensure the token is valid.
+  url: https://developers.google.com/recaptcha/docs/v3
+servers:
+- description: ""
+  url: https://www.google.com/recaptcha/api
+tags:
+- name: Verify
+paths:
+  /siteverify:
+    post:
+      description: Verify a user's response to a reCAPTCHA challenge.
+      externalDocs:
+        description: API Request
+        url: https://developers.google.com/recaptcha/docs/verify#api_request
+      operationId: ""
+      parameters: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VerifyRequest'
+        description: POST Parameter
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VerifyResponse'
+          description: API Response
+      security: []
+      summary: Verify User Response
+      tags:
+      - Verify
+components:
+  callbacks: {}
+  links: {}
+  schemas:
+    VerifyRequest:
+      properties:
+        secret:
+          description: The shared key between your site and reCAPTCHA.
+          type: string
+        response:
+          description: The user response token provided by the reCAPTCHA client-side
+            integration on your site.
+          type: string
+        remoteip:
+          description: The user's IP address.
+          type: string
+      required:
+      - response
+      - secret
+      type: object
+    VerifyResponse:
+      example:
+        hostname: hostname
+        error-codes:
+        - ""
+        - ""
+        success: false
+        challenge_ts: 2000-01-23T04:56:07.000+00:00
+      properties:
+        success:
+          example: false
+          type: boolean
+        challenge_ts:
+          description: timestamp of the challenge load.
+          format: date-time
+          type: string
+        hostname:
+          description: the hostname of the site where the reCAPTCHA was solved
+          type: string
+        error-codes:
+          items: {}
+          type: array
+      required:
+      - success
+      type: object

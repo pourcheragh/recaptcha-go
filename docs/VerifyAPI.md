@@ -1,0 +1,79 @@
+# \VerifyAPI
+
+All URIs are relative to *https://www.google.com/recaptcha/api*
+
+Method | HTTP request | Description
+------------- | ------------- | -------------
+[**SiteVerifyPost**](VerifyAPI.md#SiteVerifyPost) | **Post** /siteverify | Verify User Response
+
+
+
+## SiteVerifyPost
+
+> VerifyResponse SiteVerifyPost(ctx).Secret(secret).Response(response).Remoteip(remoteip).Execute()
+
+Verify User Response
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/pourcheragh/recaptcha-go"
+)
+
+func main() {
+	secret := "secret_example" // string | The shared key between your site and reCAPTCHA.
+	response := "response_example" // string | The user response token provided by the reCAPTCHA client-side integration on your site.
+	remoteip := "remoteip_example" // string | The user's IP address. (optional)
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.VerifyAPI.SiteVerifyPost(context.Background()).Secret(secret).Response(response).Remoteip(remoteip).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `VerifyAPI.SiteVerifyPost``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `SiteVerifyPost`: VerifyResponse
+	fmt.Fprintf(os.Stdout, "Response from `VerifyAPI.SiteVerifyPost`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiSiteVerifyPostRequest struct via the builder pattern
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **secret** | **string** | The shared key between your site and reCAPTCHA. | 
+ **response** | **string** | The user response token provided by the reCAPTCHA client-side integration on your site. | 
+ **remoteip** | **string** | The user&#39;s IP address. | 
+
+### Return type
+
+[**VerifyResponse**](VerifyResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+- **Content-Type**: multipart/form-data
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
+
